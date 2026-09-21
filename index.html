@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>E-Ticaret Net Kâr & Komisyon Hesaplayıcı</title>
   <meta name="description" content="Pazaryeri satışlarınızda net kârınızı, platform komisyonunu ve kargo giderlerinizi anında hesaplayın.">
+  <meta name="google-site-verification" content="PCClm4gFGg5jCIJ9TfJg6vK0Y2t3pXS6W8EdlM4JOzo" />
   
   <style>
     :root {
@@ -551,27 +552,19 @@
         return;
       }
 
-      // 1. Komisyon Hesaplama
       const komisyonTutar = (satim * komisyonOrani) / 100;
-
-      // 2. Tahmini İade Maliyeti Payı (İade durumunda kargo x2 maliyeti yansır)
       const iadeMaliyetiPayi = (kargo * 2) * (iadeOrani / 100);
-
-      // 3. Toplam Giderler
       const toplamGider = kargo + hizmet + iadeMaliyetiPayi;
 
-      // 4. KDV Ayrıştırması
       const satiskdv = satim - (satim / (1 + (kdvOrani / 100)));
       const aliskdv = alim - (alim / (1 + (kdvOrani / 100)));
       const giderkdv = (komisyonTutar + toplamGider) - ((komisyonTutar + toplamGider) / (1 + (kdvOrani / 100)));
       const netKdv = Math.max(0, satiskdv - (aliskdv + giderkdv));
 
-      // 5. Net Kâr
       const netKar = satim - alim - komisyonTutar - toplamGider - netKdv;
       const karMarji = parseFloat(((netKar / satim) * 100).toFixed(1));
       const topluNetKar = netKar * adet;
 
-      // Ekran Değerleri Güncelleme
       document.getElementById('komisyonTutar').innerText = komisyonTutar.toFixed(2) + " TL";
       document.getElementById('toplamKesinti').innerText = toplamGider.toFixed(2) + " TL";
       document.getElementById('netKdv').innerText = netKdv.toFixed(2) + " TL";
@@ -596,7 +589,6 @@
 
       document.getElementById('sonucAlani').style.display = 'block';
 
-      // Paylaşım Metni Hazırlama
       ozetMetin = `📊 *E-Ticaret Kârlılık Özeti*\n` +
                 `• Satış Fiyatı: ${satim.toFixed(2)} TL\n` +
                 `• Alış Maliyeti: ${alim.toFixed(2)} TL\n` +
@@ -607,7 +599,6 @@
                 `💰 *Birim Net Kâr:* ${netKar.toFixed(2)} TL (%${karMarji})\n` +
                 `📦 *${adet} Adet Toplam Net Kâr:* ${topluNetKar.toFixed(2)} TL`;
 
-      // Sağ Panel Metre
       const meter = document.getElementById('meterFill');
       const icon = document.getElementById('analysisIcon');
       const title = document.getElementById('analysisTitle');
